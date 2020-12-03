@@ -4,6 +4,9 @@ import telegram
 import time
 import logging
 from datetime import datetime
+import mysql.connector
+from mysql.connector import MySQLConnection, Error
+
 
 client = pokepy.V2Client(cache='in_disk')
 bot = telegram.Bot(token='')
@@ -19,6 +22,8 @@ def Captura(update, context):
     ]
 
     chat_id = update.effective_chat.id
+    user = update.message.from_user
+    now = datetime.now()
     pokemon = client.get_pokemon(random.choice(random_pokemon))
     catch = client.get_pokemon_species(pokemon.id)
     chance = False
@@ -26,25 +31,25 @@ def Captura(update, context):
     shinyChance = random.choice(range(0, 99))
 
     if shinyChance != 0:
-        bot.sendAnimation(
-            chat_id, animation=open(f'sprites/normal/{pokemon.name.capitalize()}.gif', 'rb'))
+        # bot.sendAnimation(
+        #     chat_id, animation=open(f'sprites/normal/{pokemon.name.capitalize()}.gif', 'rb'))
         update.message.reply_text(
             f'Você encontrou um {pokemon.name.capitalize()}. Pokebola, vai!')
 
     else:
         isShiny = True
-        bot.sendAnimation(
-            chat_id, animation=open(f'sprites/shiny/{pokemon.name.capitalize()}.gif', 'rb'))
+        # bot.sendAnimation(
+        #     chat_id, animation=open(f'sprites/shiny/{pokemon.name.capitalize()}.gif', 'rb'))
         update.message.reply_text(
             f'Você encontrou um {pokemon.name.capitalize()} Shiny! Pokebola, vai!')
 
-    bot.sendAnimation(
-        chat_id, animation=open('sprites/pokeball.mp4', 'rb'))
+    # bot.sendAnimation(
+    #     chat_id, animation=open('sprites/pokeball.mp4', 'rb'))
 
-    for i in range(3):
-        time.sleep(1)
-        update.message.reply_text('.')
-    time.sleep(1)
+    # for i in range(3):
+    #     time.sleep(1)
+    #     update.message.reply_text('.')
+    # time.sleep(1)
 
     i = 10
     r = 0
@@ -71,7 +76,7 @@ def Captura(update, context):
         else:
             update.message.reply_text(
                 f'Parabéns, você capturou um {pokemon.name.capitalize()}!')
-        captureLog(update, pokemon, isShiny, context)
+        insertPokemonDB(update, pokemon, isShiny, now, context)
 
     else:
         update.message.reply_text(random.choice(answer))
@@ -106,7 +111,7 @@ def checkPokedex(update, context):
             update.message.reply_text('Insira um pokémon válido!')
 
 
-def doLogging(update, context):
+def startLogging(update, context):
 
     user = update.message.from_user
     now = datetime.now()
@@ -117,12 +122,44 @@ def doLogging(update, context):
     log.close()
 
 
-def captureLog(update, pokemon, isShiny, context):
+def connect():
+    """ Connect to MySQL database """
+    conn = None
+    try:
+        conn = mysql.connector.connect(host='localhost',
+                                       database='pokemon',
+                                       user='root',
+                                       password='my-secret-pw')
+        if conn.is_connected():
+            print('Connected to MySQL database')
 
-    user = update.message.from_user
+    except Error as e:
+        print(e)
+
+    finally:
+        if conn is not None and conn.is_connected():
+            conn.close()
+
+
+def insertPokemonDB(update, pokemon, isShiny, now, context):
     now = datetime.now()
     current_time = now.strftime("%d/%m/%Y - %H:%M:%S")
+    conn = mysql.connector.connect(host='localhost',
+                                   database='pokemon',
+                                   user='root',
+                                   password='my-secret-pw')
+
+    user = update.message.from_user
+    mycursor = conn.cursor()
+
+    sql = "INSERT INTO captured (id, pokemon_name, is_shiny, date) VALUES (%s, %s, %s, %s)"
+    val = [user.id, pokemon.name.capitalize(), isShiny, now]
+
     log = open("logCapture.txt", "a+")
     log.write(
-        f"{current_time} - User: {user.first_name} - Pokemon: {pokemon.name.capitalize()} - Shiny: {isShiny}\n")
+        f"{current_time} - User: {user.first_name} ({user.id}) - Pokemon: {pokemon.name.capitalize()} - Shiny: {isShiny}\n")
     log.close()
+
+    mycursor.execute(sql, val)
+    conn.commit()
+    print(mycursor.rowcount, "record inserted.")
