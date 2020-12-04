@@ -8,9 +8,9 @@ from functions import Captura, startLogging, checkPokedex, connect
 import mysql.connector
 from mysql.connector import MySQLConnection, Error
 
-
+token = ''
 client = pokepy.V2Client(cache='in_disk')
-bot = telegram.Bot(token='')
+bot = telegram.Bot(token=token)
 
 
 # Enable logging
@@ -24,14 +24,12 @@ def start(update, context):
     startLogging(update, context)
     chat_id = update.effective_chat.id
     bot.sendPhoto(
-        chat_id, photo=open('sprites/oak.png', 'rb'))
-    update.message.reply_text('''
-        Olá, bem-vindo ao mundo de Pokemon!\nEu sou o Professor Carvalho!
+        chat_id, photo=open('sprites/oak.png', 'rb'), caption='''Olá, bem-vindo ao mundo de Pokemon!\nEu sou o Professor Carvalho!
         \nEste mundo é habitado por criaturas chamadas Pokemon!\nPara alguns, eles são pets. Outros os usam em batalhas.\nEu... Bom, eu os estudo como profissão.
         ''')
-    time.sleep(4)
+    time.sleep(3)
     update.message.reply_text(
-        'Envie /procurar para começar sua jornada Pokemon!')
+        'Envie / para começar sua jornada Pokemon!')
 
 
 def procurar(update, context):
@@ -82,7 +80,7 @@ def returnPokemon(update, context):
 # Start bot
 def main():
     updater = Updater(
-        '', use_context=True)
+        token, use_context=True)
     dp = updater.dispatcher
 
     dp.add_handler(CommandHandler('start', start))

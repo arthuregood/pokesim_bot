@@ -8,8 +8,9 @@ import mysql.connector
 from mysql.connector import MySQLConnection, Error
 
 
+token = ''
 client = pokepy.V2Client(cache='in_disk')
-bot = telegram.Bot(token='')
+bot = telegram.Bot(token=token)
 
 
 def Captura(update, context):
@@ -32,24 +33,16 @@ def Captura(update, context):
 
     if shinyChance != 0:
         bot.sendAnimation(
-            chat_id, animation=open(f'sprites/normal/{pokemon.name.capitalize()}.gif', 'rb'))
-        update.message.reply_text(
-            f'Você encontrou um {pokemon.name.capitalize()}. Pokebola, vai!')
+            chat_id, animation=open(f'sprites/normal/{pokemon.name.capitalize()}.gif', 'rb'), caption=f'Você encontrou um {pokemon.name.capitalize()}. Pokebola, vai!')
 
     else:
         isShiny = True
         bot.sendAnimation(
-            chat_id, animation=open(f'sprites/shiny/{pokemon.name.capitalize()}.gif', 'rb'))
-        update.message.reply_text(
-            f'Você encontrou um {pokemon.name.capitalize()} Shiny! Pokebola, vai!')
+            chat_id, animation=open(f'sprites/shiny/{pokemon.name.capitalize()}.gif', 'rb'), caption=f'Você encontrou um {pokemon.name.capitalize()} Shiny! Pokebola, vai!')
 
     bot.sendAnimation(
         chat_id, animation=open('sprites/pokeball.mp4', 'rb'))
-
-    for i in range(3):
-        time.sleep(1)
-        update.message.reply_text('.')
-    time.sleep(1)
+    time.sleep(3)
 
     i = 10
     r = 0
@@ -89,9 +82,7 @@ def checkPokedex(update, context):
 
     if value == '/pokedex' or value == '/pokedex@pokesim_bot':
         bot.sendAnimation(
-            chat_id, animation=open('sprites/pokedex.gif', 'rb'))
-        update.message.reply_text(
-            'Uma pequena enciclopédia de Pokemons! Tente colocar o nome ou número de um Pokemon depois de "/pokedex"')
+            chat_id, animation=open('sprites/pokedex.gif', 'rb'), caption='Uma pequena enciclopédia de Pokemons! Tente colocar o nome ou número de um Pokemon depois de "/pokedex"')
 
     else:
         value = value.replace('/pokedex@pokesim_bot ', '').lower()
@@ -100,15 +91,14 @@ def checkPokedex(update, context):
         try:
             pokemon = client.get_pokemon(value)
             bot.sendAnimation(
-                chat_id, animation=open(f'sprites/normal/{pokemon.name.capitalize()}.gif', 'rb'))
-            update.message.reply_text(f'''
+                chat_id, animation=open(f'sprites/normal/{pokemon.name.capitalize()}.gif', 'rb'), caption=f'''
                 Número - {pokemon.id}\nNome - {pokemon.name.capitalize()}\nPeso - {pokemon.weight/10} kg\nTamanho - {pokemon.height/10} m
                 ''')
 
         except:
             bot.sendAnimation(
-                chat_id, animation=open('sprites/missingno.gif', 'rb'))
-            update.message.reply_text('Insira um pokémon válido!')
+                chat_id, animation=open('sprites/missingno.gif', 'rb'), caption='Missingno! Insira um pokémon válido!')
+            update.message.reply_text()
 
 
 def startLogging(update, context):
