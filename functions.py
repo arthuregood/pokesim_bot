@@ -31,25 +31,25 @@ def Captura(update, context):
     shinyChance = random.choice(range(0, 99))
 
     if shinyChance != 0:
-        # bot.sendAnimation(
-        #     chat_id, animation=open(f'sprites/normal/{pokemon.name.capitalize()}.gif', 'rb'))
+        bot.sendAnimation(
+            chat_id, animation=open(f'sprites/normal/{pokemon.name.capitalize()}.gif', 'rb'))
         update.message.reply_text(
             f'Você encontrou um {pokemon.name.capitalize()}. Pokebola, vai!')
 
     else:
         isShiny = True
-        # bot.sendAnimation(
-        #     chat_id, animation=open(f'sprites/shiny/{pokemon.name.capitalize()}.gif', 'rb'))
+        bot.sendAnimation(
+            chat_id, animation=open(f'sprites/shiny/{pokemon.name.capitalize()}.gif', 'rb'))
         update.message.reply_text(
             f'Você encontrou um {pokemon.name.capitalize()} Shiny! Pokebola, vai!')
 
-    # bot.sendAnimation(
-    #     chat_id, animation=open('sprites/pokeball.mp4', 'rb'))
+    bot.sendAnimation(
+        chat_id, animation=open('sprites/pokeball.mp4', 'rb'))
 
-    # for i in range(3):
-    #     time.sleep(1)
-    #     update.message.reply_text('.')
-    # time.sleep(1)
+    for i in range(3):
+        time.sleep(1)
+        update.message.reply_text('.')
+    time.sleep(1)
 
     i = 10
     r = 0

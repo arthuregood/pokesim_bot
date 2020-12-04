@@ -74,7 +74,6 @@ def returnPokemon(update, context):
             i += 1
 
         update.message.reply_text(f'{captured}')
-        print(pokemons)
     except:
         update.message.reply_text(
             'Não há dados o suficiente sobre seus Pokemons!')
