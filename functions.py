@@ -79,6 +79,8 @@ def checkPokedex(update, context):
 
     value = (update.message.text)
     chat_id = update.effective_chat.id
+    legendary_ids = [144, 145, 146, 150, 151, 243, 244, 245, 249,
+                     250, 251, 377, 378, 379, 380, 381, 382, 383, 384, 385, 386]
 
     if value == '/pokedex' or value == '/pokedex@pokesim_bot':
         bot.sendAnimation(
@@ -87,18 +89,23 @@ def checkPokedex(update, context):
     else:
         value = value.replace('/pokedex@pokesim_bot ', '').lower()
         value = value.replace('/pokedex ', '').lower()
-
         try:
             pokemon = client.get_pokemon(value)
-            bot.sendAnimation(
-                chat_id, animation=open(f'sprites/normal/{pokemon.name.capitalize()}.gif', 'rb'), caption=f'''
-                Número - {pokemon.id}\nNome - {pokemon.name.capitalize()}\nPeso - {pokemon.weight/10} kg\nTamanho - {pokemon.height/10} m
-                ''')
+
+            if pokemon.id in legendary_ids:
+                bot.sendAnimation(
+                    chat_id, animation=open(f'sprites/normal/{pokemon.name.capitalize()}.gif', 'rb'), caption=f'''
+                        Pokemon Lendário!\nNúmero - {pokemon.id}\nNome - {pokemon.name.capitalize()}\nPeso - {pokemon.weight/10} kg\nTamanho - {pokemon.height/10} m\n
+                        ''')
+            else:
+                bot.sendAnimation(
+                    chat_id, animation=open(f'sprites/normal/{pokemon.name.capitalize()}.gif', 'rb'), caption=f'''
+                        Número - {pokemon.id}\nNome - {pokemon.name.capitalize()}\nPeso - {pokemon.weight/10} kg\nTamanho - {pokemon.height/10} m
+                        ''')
 
         except:
             bot.sendAnimation(
                 chat_id, animation=open('sprites/missingno.gif', 'rb'), caption='Missingno! Insira um pokémon válido!')
-            update.message.reply_text()
 
 
 def startLogging(update, context):

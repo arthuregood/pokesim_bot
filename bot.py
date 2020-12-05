@@ -76,8 +76,9 @@ def returnPokemon(update, context):
         update.message.reply_text(
             'Não há dados o suficiente sobre seus Pokemons!')
 
-
 # Start bot
+
+
 def main():
     updater = Updater(
         token, use_context=True)
