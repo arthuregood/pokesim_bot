@@ -6,9 +6,7 @@ pokesim_bot is a Pokemon Encounter Simulator bot for Telegram (in brazilian port
 
 
 Next steps:
-* Multi-language support.
-* More info in Pokedex.
-* Who knows?
+**Check 'Issues' tab!**
 
 
 Dependencies:
