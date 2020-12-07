@@ -8,8 +8,13 @@ import mysql.connector
 from mysql.connector import MySQLConnection, Error
 
 
+<<<<<<< HEAD:functions.py
 token = '1167364636:AAHH9n9OLcRYQlGmrHdcXZEftP1b0NoZty0'
 client = pokepy.V2Client(cache='in_disk')
+=======
+token = ''
+client = pokepy.V2Client()
+>>>>>>> a364d1486a446654ba1506f850dcca959d54f604:pokesim_bot/functions.py
 bot = telegram.Bot(token=token)
 
 
