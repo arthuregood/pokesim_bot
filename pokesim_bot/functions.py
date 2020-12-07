@@ -8,7 +8,7 @@ import mysql.connector
 from mysql.connector import MySQLConnection, Error
 
 
-token = '952409205:AAHSVni5FVXtKTOc-8nT8dh5yhq77Jej1as'
+token = ''
 client = pokepy.V2Client()
 bot = telegram.Bot(token=token)
 
