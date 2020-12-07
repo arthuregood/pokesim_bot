@@ -9,7 +9,7 @@ from mysql.connector import MySQLConnection, Error
 
 
 token = ''
-client = pokepy.V2Client(cache='in_disk')
+client = pokepy.V2Client()
 bot = telegram.Bot(token=token)
 
 
