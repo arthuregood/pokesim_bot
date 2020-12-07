@@ -8,7 +8,7 @@ from functions import Captura, startLogging, checkPokedex, connect
 import mysql.connector
 from mysql.connector import MySQLConnection, Error
 
-token = ''
+token = '1167364636:AAHH9n9OLcRYQlGmrHdcXZEftP1b0NoZty0'
 client = pokepy.V2Client(cache='in_disk')
 bot = telegram.Bot(token=token)
 
