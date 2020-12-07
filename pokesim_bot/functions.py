@@ -8,13 +8,8 @@ import mysql.connector
 from mysql.connector import MySQLConnection, Error
 
 
-<<<<<<< HEAD:functions.py
-token = '1167364636:AAHH9n9OLcRYQlGmrHdcXZEftP1b0NoZty0'
-client = pokepy.V2Client(cache='in_disk')
-=======
 token = ''
 client = pokepy.V2Client()
->>>>>>> a364d1486a446654ba1506f850dcca959d54f604:pokesim_bot/functions.py
 bot = telegram.Bot(token=token)
 
 
@@ -38,15 +33,15 @@ def Captura(update, context):
 
     if shinyChance != 0:
         bot.sendAnimation(
-            chat_id, animation=open(f'sprites/normal/{pokemon.name.capitalize()}.gif', 'rb'), caption=f'Você encontrou um {pokemon.name.capitalize()}. Pokebola, vai!')
+            chat_id, animation=open(f'assets/normal/{pokemon.name.capitalize()}.gif', 'rb'), caption=f'Você encontrou um {pokemon.name.capitalize()}. Pokebola, vai!')
 
     else:
         isShiny = True
         bot.sendAnimation(
-            chat_id, animation=open(f'sprites/shiny/{pokemon.name.capitalize()}.gif', 'rb'), caption=f'Você encontrou um {pokemon.name.capitalize()} Shiny! Pokebola, vai!')
+            chat_id, animation=open(f'assets/shiny/{pokemon.name.capitalize()}.gif', 'rb'), caption=f'Você encontrou um {pokemon.name.capitalize()} Shiny! Pokebola, vai!')
 
     bot.sendAnimation(
-        chat_id, animation=open('sprites/pokeball.mp4', 'rb'))
+        chat_id, animation=open('assets/pokeball.mp4', 'rb'))
     time.sleep(3)
 
     i = 10
@@ -89,7 +84,7 @@ def checkPokedex(update, context):
 
     if value == '/pokedex' or value == '/pokedex@pokesim_bot':
         bot.sendAnimation(
-            chat_id, animation=open('sprites/pokedex.gif', 'rb'), caption='Uma pequena enciclopédia de Pokemons! Tente colocar o nome ou número de um Pokemon depois de "/pokedex"')
+            chat_id, animation=open('assets/pokedex.gif', 'rb'), caption='Uma pequena enciclopédia de Pokemons! Tente colocar o nome ou número de um Pokemon depois de "/pokedex"')
 
     else:
         value = value.replace('/pokedex@pokesim_bot ', '').lower()
@@ -99,18 +94,18 @@ def checkPokedex(update, context):
 
             if pokemon.id in legendary_ids:
                 bot.sendAnimation(
-                    chat_id, animation=open(f'sprites/normal/{pokemon.name.capitalize()}.gif', 'rb'), caption=f'''
+                    chat_id, animation=open(f'assets/normal/{pokemon.name.capitalize()}.gif', 'rb'), caption=f'''
                         Pokemon Lendário!\nNúmero - {pokemon.id}\nNome - {pokemon.name.capitalize()}\nPeso - {pokemon.weight/10} kg\nTamanho - {pokemon.height/10} m\n
                         ''')
             else:
                 bot.sendAnimation(
-                    chat_id, animation=open(f'sprites/normal/{pokemon.name.capitalize()}.gif', 'rb'), caption=f'''
+                    chat_id, animation=open(f'assets/normal/{pokemon.name.capitalize()}.gif', 'rb'), caption=f'''
                         Número - {pokemon.id}\nNome - {pokemon.name.capitalize()}\nPeso - {pokemon.weight/10} kg\nTamanho - {pokemon.height/10} m
                         ''')
 
         except:
             bot.sendAnimation(
-                chat_id, animation=open('sprites/missingno.gif', 'rb'), caption='Missingno! Insira um pokémon válido!')
+                chat_id, animation=open('assets/missingno.gif', 'rb'), caption='Missingno! Insira um pokémon válido!')
 
 
 def startLogging(update, context):

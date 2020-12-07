@@ -24,7 +24,7 @@ def start(update, context):
     startLogging(update, context)
     chat_id = update.effective_chat.id
     bot.sendPhoto(
-        chat_id, photo=open('sprites/oak.png', 'rb'), caption='''Olá, bem-vindo ao mundo de Pokemon!\nEu sou o Professor Carvalho!
+        chat_id, photo=open('assets/oak.png', 'rb'), caption='''Olá, bem-vindo ao mundo de Pokemon!\nEu sou o Professor Carvalho!
         \nEste mundo é habitado por criaturas chamadas Pokemon!\nPara alguns, eles são pets. Outros os usam em batalhas.\nEu... Bom, eu os estudo como profissão.
         ''')
     time.sleep(3)
