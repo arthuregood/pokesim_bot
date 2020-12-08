@@ -74,6 +74,8 @@ def Captura(update, context):
     else:
         update.message.reply_text(random.choice(answer))
 
+    time.sleep(3)
+
 
 def checkPokedex(update, context):
 
@@ -106,6 +108,8 @@ def checkPokedex(update, context):
         except:
             bot.sendAnimation(
                 chat_id, animation=open('assets/missingno.gif', 'rb'), caption='Missingno! Insira um pokémon válido!')
+
+    time.sleep(3)
 
 
 def startLogging(update, context):
@@ -160,3 +164,38 @@ def insertPokemonDB(update, pokemon, isShiny, now, context):
     mycursor.execute(sql, val)
     conn.commit()
     print(mycursor.rowcount, "record inserted.")
+
+
+def StarterChoice(update, context):
+
+    chat_id = update.effective_chat.id
+    user = update.message.from_user
+    conn = mysql.connector.connect(host='localhost',
+                                   database='pokemon',
+                                   user='root',
+                                   password='my-secret-pw')
+    mycursor = conn.cursor()
+    mycursor.execute(
+        f"SELECT id from captured where id = {user.id}")
+    row = mycursor.fetchone()
+
+    if row[0] == user.id:
+        update.message.reply_text('Ei, você já escolheu seu Pokemon inicial!')
+
+    else:
+        value = (update.message.text)
+        value = value.replace('/escolher ', '').lower()
+
+        try:
+            if value == 'squirtle' or 'charmander' or 'bulbasaur':
+                pokemon = client.get_pokemon(value)
+                now = datetime.now()
+                isShiny = False
+                insertPokemonDB(update, pokemon, isShiny, now, context)
+                update.message.reply_text(
+                    f'Cuide bem do seu {pokemon.name.capitalize()}!\nEnvie / para começar sua jornada Pokemon!')
+                time.sleep(3)
+
+        except:
+            update.message.reply_text("Insira uma escolha válida!")
+            time.sleep(3)
